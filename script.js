@@ -35,3 +35,34 @@ async function startRecording() {
         console.error('Error starting recording:', error);
     }
 }
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+      recordButton.style.display = 'inline-block';
+      stopButton.style.display = 'none';
+      recordStatus.textContent = 'Recording stopped. Uploading...';
+  
+      // Convert recordedChunks to a Blob
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+  
+      // Create a FormData object and append the video blob
+      const formData = new FormData();
+      formData.append('video', blob, 'recorded-video.webm');
+  
+      // Make a POST request to your backend API endpoint
+      fetch('http://localhost:5006/videos/upload', {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          recordStatus.textContent = 'Recording stopped. Upload complete.';
+        })
+        .catch((error) => {
+          console.error('Error uploading video:', error);
+          recordStatus.textContent = 'Recording stopped. Upload failed.';
+        });
+    }
+  }
+  
