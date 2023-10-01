@@ -1,0 +1,9 @@
+{
+    "name": "ScreenCast",
+    "manifest_version": 3,
+    "version": "1.0.0",
+    "description": "Record and share your screen with a click!",
+    "author": "David U",
+    "action":{"default_popup": "index.html"}
+  }
+  
